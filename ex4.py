@@ -29,6 +29,22 @@ x = 12
 
 #list related methods
 primes.append(11)
+
+#addition also lets you append
+primes = primes + [13,17]
+del(primes[-2:-1]) #removing elements
+print('New Prime',primes)
+
+new_prime_list = primes
+###changing elements in new_prime_list also changes primes. variable is a reference to address.
+new_prime_list += [13]
+print(primes)
+
+#thus to copy a list
+new_prime_list = list(primes)
+# or
+new_prime_list = primes[x]
+
 primes.pop()
 if 7 in primes: #you need to check first else error if not found
 	print(primes.index(7))

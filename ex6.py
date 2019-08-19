@@ -2,6 +2,11 @@
 print('It\'s name is Bob.')
 
 #triple quote syntax
+
+#backslash/escaping
+str = "Pluto\'s\na planet. /\\"
+print(str)
+
 str = """This is
 a
 	special
@@ -10,10 +15,6 @@ string
 
 print(str)
 print(str[0:2])
-
-#backslash/escaping
-str = "Pluto\'s\na planet. /\\"
-print(str)
 
 triple = """hello
 world"""
@@ -25,10 +26,11 @@ print([char+"_" for char in triple])
 
 str.upper()
 str.lower()
-str.index('spe')
+#str.index('spe')
 str.startswith('Thi')
 str.endswith('Thi')
-
+str = str.replace('This','That')
+print(str)
 print(str.split(' '))
 print("_".join(['hi','there']))
 
