@@ -1,7 +1,0 @@
-#list comprehensions
-#previously went through that you can make list comprehensions using existing series
-#but, you can use it on any iterable object
-
-result = [ num for num in range(11) ]
-print(*result)
-
