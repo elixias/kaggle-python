@@ -22,3 +22,18 @@ print(r.text)
 #xl = pd.read_excel(url,sheetname=None) #None means all sheets
 #xl.keys() #xl is dict object
 
+"""Beautiful Soup"""
+from bs4 import BeautifulSoup
+soup = BeautifulSoup(r.text)
+print(soup.prettify())
+print(soup.title)
+print(soup.get_text())
+#find_all('a') <- [link.get('href') for link in find_all('a')]
+
+"""Connecting to JSON"""
+import json
+with open('file.json','r') as json_file:
+	json_data = json.load(json_file)
+"""connecting to APIs to receive JSON"""
+new_r = request.get(url)
+json_data = r.json()
