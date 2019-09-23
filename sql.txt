@@ -1,0 +1,25 @@
+distinct 
+count #returns non missing
+
+SELECT COUNT(DISTINCT birthdate)
+FROM people;
+
+<> not equal
+release_year >= 1990 and release_year <= 2000; #use BETWEEN, is inclusive of the ranges
+where _ in (..,..) #don't have to use so many 'OR'
+IS NULL/IS NOT NULL
+LIKE/NOT LIKE '_Data%' #_ for single character
+
+#Aggregate functions
+SELECT AVG/SUM/MAX/MIN/COUNT(budget) FROM films;
+
+#structured query
+#aliasing (as)
+
+GROUP BY #goes first before ORDER BY
+ORDER BY #naturally ascending
+
+#can't use group by with where
+#need to use HAVING
+
+
