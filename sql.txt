@@ -13,6 +13,9 @@ LIKE/NOT LIKE '_Data%' #_ for single character
 #Aggregate functions
 SELECT AVG/SUM/MAX/MIN/COUNT(budget) FROM films;
 
+#typecasting
+SELECT temp * CAST(wind_speed as integer) as wind_chill FROM weather;
+
 #structured query
 #aliasing (as)
 
@@ -22,4 +25,54 @@ ORDER BY #naturally ascending
 #can't use group by with where
 #need to use HAVING
 
+#select table_schema, table_name from information_schema.tables
+#select table_schema, table_name from information_schema.columns
+SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';
+SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'university_professors' AND table_schema = 'public';
+
+CREATE TABLE <tablename> (
+column_x integer PRIMARY KEY,
+column_a text not null,
+column_b UNIQUE,
+column_c char(5)
+//PRIMARY KEY (a,c)
+//column_x integer UNIQUE NOT NULL
+column integer references tablename (name) ON DELETE NO ACTION//foreign keys ON DELETE CASCADE, SET NULL, SET DEFAULT, RESTRICT
+);
+
+ALTER TABLE university ADD COLUMN university_shortname text;
+ALTER TABLE university ADD COLUMN id serial PRIMARY KEY; //serial
+ALTER TABLE university RENAME COLUMN oldname TO newname;
+ALTER TABLE university DROP COLUMN column;
+ALTER TABLE students ALTER COLUMN column TYPE varchar(128);
+ALTER TABLE students ALTER COLUMN averagegrd TYPE integer USING ROUND(averagegrd);
+ALTER TABLE table_name ALTER COLUMN column_name TYPE varchar(x) USING SUBSTRING(column_name FROM 1 FOR x);
+ALTER TABLE students ALTER column SET/DROP NOT NULL
+ALTER TABLE students ADD CONSTRAINT somename UNIQUE(col name);
+ALTER TABLE students ADD CONSTRAINT somename PRIMARY KEY (col name);
+ALTER TABLE tablename ADD COLUMN columnc varchar(256); UPDATE tablename SET columnc = CONCAT(a,b); ALTER TABLE tablename ADD CONSTRAINT pk PRIMARY KEY (columnc);
+ALTER TABLE tbl ADD CONSTRAINT afkey FOREIGN KEY (b_id) REFERENCES b(id)
+DROP TABLE <tablename>
+
+INSERT INTO <> 
+	SELECT DISTINCT organization, organization_sector
+	FROM university_professors;
+
+INSERT INTO <tablename> (column_a, column_b) VALUES ('a','b')
+
+#integrity constraints
+#	attributes - data types (text, varchar[] (up to max chars), char[] (fixed chars), boolean)
+#							date, time, timestamp, numeric(3,2), integer
+#	key constraints - primary keys
+#	referential integrity - foreign keys
+
+#foreign key constraints cannot be altered
+#need to be deleted
+#dive into information_schema to find the name of the constraint
+SELECT constraint_name, table_name, constraint_type
+FROM information_schema.table_constraints
+WHERE constraint_type = 'FOREIGN KEY';
+
+ALTER TABLE affiliations
+DROP CONSTRAINT affiliations_organization_id_fkey;
 
