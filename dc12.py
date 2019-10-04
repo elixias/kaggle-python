@@ -68,3 +68,5 @@ collapsed = img.mean(axis=2)
 uneven = collapsed[::4,::2]
 plt.imshow(uneven,aspect=2.0) #or use extent=(0,680,0,480)
 plt.imshow(img, extent=(-1,1,-1,1), aspect=0.5)
+
+plt.twinx() #to overlay plots with different vertical scales on the same horizontal axis
