@@ -1,0 +1,77 @@
+cut -f 2-5,8 -d , values.csv
+tail -n +6 filename.txt
+history
+!2 //to run the number 2 command in history
+!head //reruns the most recent command that begins with head
+
+grep <text> <file>
+-c count of lines
+-i ignore case
+-l print the files that contain
+-n print line numbers
+
+-h not print filename
+-v show lines that dont match
+
+paste -d <file> <file>
+
+Suppose you want to get lines from the middle of a file. More specifically, suppose you want to get lines 3-5 from one of our data files. You can start by using head to get the first 5 lines and redirect that to a file, and then use tail to select the last 3:
+head -n 5 seasonal/winter.csv > top.csv
+tail -n 3 top.csv
+
+The pipe symbol tells the shell to use the output of the command on the left as the input to the command on the right.
+head -n 5 seasonal/summer.csv | tail -n 3
+
+wordcount 
+wc -c -w -l
+grep 2017-07 seasonal/spring.csv | wc -l
+
+you can use cmd on multiple files using wildcards
+cut -d , -f 1 seasonal/*
+
+other wildcards: ? - single char, [78] matches either 7 or 8, {*.txt,*.pdf} matches any of the pattern in {}
+
+sort -n(sort numerically) -r (reverse) -b (ignore blanks) -f (case insensitive)
+
+uniq -c shows unique (based on adjacent rows and -c = count)
+cut -d , -f 2 seasonal/winter.csv | grep -v Tooth | sort | uniq -c
+
+> result.txt head -n 3 seasonal/winter.csv
+###putting the redirect in front still runs as per normal
+
+ENVIRONMENT VARIABLES (set)
+HOME, PWD, SHELL, USER
+echo $HOME
+
+SHELL VARIABLES
+shellvar=nospacebeforeafterequals
+
+FOR LOOPS!
+for filetype in gif jpg png; do echo $filetype; done
+for filename in seasonal/*.csv; do echo $filename; done
+//can add | and ; for more body content
+
+
+nano filename
+ctrl + k delete line
+Ctrl + U: un-delete a line.
+Ctrl + O: save the file ('O' stands for 'output'). You will also need to press Enter to confirm the filename!
+Ctrl + X: exit the editor.
+
+bash dates.sh
+
+SCRIPTS WITH ARGUMENTS
+If unique-lines.sh contains sort $@ | uniq, when you run:
+bash unique-lines.sh seasonal/summer.csv
+the shell replaces $@ with seasonal/summer.csv and processes one file. If you run this:
+
+#comment and scripts
+# Print the first and last data records of each file.
+for filename in $@
+do
+    head -n 2 $filename | tail -n 1
+    tail -n 1 $filename
+done
+
+#you can also pipe your script to the command
+bash date-range.sh seasonal/*.csv | sort

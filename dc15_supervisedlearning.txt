@@ -1,0 +1,352 @@
+from sklearn import datasets
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+plt.style.use('ggplot')
+
+iris = datasets.load_iris()
+type(iris)
+
+iris.keys()
+
+x = iris.data
+y = iris.target
+df = pd.DataFrame(X, columns=iris.feature_names)
+print(df.head())
+
+#this is extremely good for finding which 2 features is best used for classification 
+_ = pd.plotting.scatter_matrix(df, c=y, figsize=[8,?], s=150, marker='D') #c is color
+
+plt.figure()
+sns.countplot(x='education', hue='party', data=df, palette='RdBu')
+plt.xticks([0,1], ['No', 'Yes'])
+plt.show()
+
+###knn
+
+from sklearn.neighbors import KNeighborsClassifier
+knn = KNeighborsClassifier(n_neighbors=6)
+knn.fit(iris['data'], iris['target'])
+prediction=knn.predict(X_new)
+
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X,y, test_size=0.3, random_state=21, stratify=y)
+
+knn.score(X_test, y_test) #eh
+
+
+"""complete code knn"""
+# Import necessary modules
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split
+# Create feature and target arrays
+X = digits.data
+y = digits.target
+# Split into training and test set
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state=42, stratify=y)
+# Create a k-NN classifier with 7 neighbors: knn
+knn = KNeighborsClassifier(n_neighbors=7)
+# Fit the classifier to the training data
+knn.fit(X_train,y_train)
+# Print the accuracy
+print(knn.score(X_test, y_test))
+
+"""linear model"""
+# Import LinearRegression
+from sklearn.linear_model import LinearRegression
+# Create the regressor: reg
+reg = LinearRegression()
+# Create the prediction space
+prediction_space = np.linspace(min(X_fertility), max(X_fertility)).reshape(-1,1)
+# Fit the model to the data
+reg.fit(X_fertility,y)
+# Compute predictions over the prediction space: y_pred
+y_pred = reg.predict(prediction_space)
+# Print R^2 
+print(reg.score(X_fertility, y))
+# Plot regression line
+plt.plot(prediction_space, y_pred, color='black', linewidth=3)
+plt.show()
+
+# Import necessary modules	
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import train_test_split
+# Create training and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state=42)
+# Create the regressor: reg_all
+reg_all = LinearRegression()
+# Fit the regressor to the training data
+reg_all.fit(X_train,y_train)
+# Predict on the test data: y_pred
+y_pred = reg_all.predict(X_test)
+# Compute and print R^2 and RMSE
+print("R^2: {}".format(reg_all.score(X_test, y_test)))
+rmse = np.sqrt(mean_squared_error(y_test,y_pred))
+print("Root Mean Squared Error: {}".format(rmse))
+
+"""cross validation"""
+#avoids metric of choice being dependent on the train-test split
+#cause when calculating error for instance, error is based on data seen before (train set)
+
+from model_selection import cross_val_score
+reg=LinearRegression()
+cv_results = cross_val_score(reg,X,y,cv=5)
+
+"""using timeit to time the running of a command"""
+%timeit cross_val_score(reg, X, y, cv = ____)
+
+"""regularisation : ridge regression loss function = OLS+ alpha*sum(square of each coefficient): penalizaes large coefficients"""
+"""lasso regression: loss is OLS+ alpha * sum(abs(coefficient)) select more impt features of dataset as it shrinks coefficients of less impt features to 0"""
+"""L1 (no squares, takes sum of |abs|) = Lasso) L2 (sums of squares = Ridge)
+"""elastic net is a*L1+b*L2 An 'l1_ratio' of 1 corresponds to an L1 penalty, and anything lower is a combination of L1 and L2."""
+
+from sklearn.linear_model import Lasso/Ridge
+(your model).coef_ #to get coefficients of the features
+
+# Import Lasso
+from sklearn.linear_model import Lasso
+# Instantiate a lasso regressor: lasso
+lasso = Lasso(alpha=0.4,normalize=True)
+# Fit the regressor to the data
+lasso.fit(X,y)
+# Compute and print the coefficients
+lasso_coef = lasso.coef_
+print(lasso_coef)
+# Plot the coefficients
+plt.plot(range(len(df_columns)), lasso_coef)
+plt.xticks(range(len(df_columns)), df_columns.values, rotation=60)
+plt.margins(0.02)
+plt.show()
+
+def display_plot(cv_scores, cv_scores_std):
+    fig = plt.figure()
+    ax = fig.add_subplot(1,1,1)
+    ax.plot(alpha_space, cv_scores)
+
+    std_error = cv_scores_std / np.sqrt(10)
+
+    ax.fill_between(alpha_space, cv_scores + std_error, cv_scores - std_error, alpha=0.2)
+    ax.set_ylabel('CV Score +/- Std Error')
+    ax.set_xlabel('Alpha')
+    ax.axhline(np.max(cv_scores), linestyle='--', color='.5')
+    ax.set_xlim([alpha_space[0], alpha_space[-1]])
+    ax.set_xscale('log')
+    plt.show()
+
+"""generating diff alphas and using them to test which alpha is the best for a model"""
+# Import necessary modules
+from sklearn.linear_model import Ridge
+from sklearn.model_selection import cross_val_score
+# Setup the array of alphas and lists to store scores
+alpha_space = np.logspace(-4, 0, 50)
+ridge_scores = []
+ridge_scores_std = []
+# Create a ridge regressor: ridge
+ridge = Ridge(normalize=True)
+# Compute scores over range of alphas
+for alpha in alpha_space:
+    # Specify the alpha value to use: ridge.alpha
+    ridge.alpha = alpha
+    # Perform 10-fold CV: ridge_cv_scores
+    ridge_cv_scores = cross_val_score(ridge,X,y,cv=10)
+    # Append the mean of ridge_cv_scores to ridge_scores
+    ridge_scores.append(np.mean(ridge_cv_scores))
+    # Append the std of ridge_cv_scores to ridge_scores_std
+    ridge_scores_std.append(np.std(ridge_cv_scores))
+# Display the plot
+display_plot(ridge_scores, ridge_scores_std)
+
+"""confusion matrix and classification report"""
+# Import necessary modules
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+# Create training and test set
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.4, random_state=42)
+# Instantiate a k-NN classifier: knn
+knn = KNeighborsClassifier(n_neighbors=6)
+# Fit the classifier to the training data
+knn.fit(X_train, y_train)
+# Predict the labels of the test data: y_pred
+y_pred = knn.predict(X_test)
+# Generate the confusion matrix and classification report
+print(confusion_matrix(y_test,y_pred))
+print(classification_report(y_test,y_pred))
+
+"""logistic regression - binary classification"""
+#output p to target variable > 0.5 = 1 
+#ROC curve is when you vary the threshold and get different values of true and false positives
+# Import the necessary modules
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report, confusion_matrix
+# Create training and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.4, random_state=42)
+# Create the classifier: logreg
+logreg = LogisticRegression()
+# Fit the classifier to the training data
+logreg.fit(X_train,y_train)
+# Predict the labels of the test set: y_pred
+y_pred = logreg.predict(X_test)
+# Compute and print the confusion matrix and classification report
+print(confusion_matrix(y_test, y_pred))
+print(classification_report(y_test, y_pred))
+
+from sklearn.metrics import roc_curve
+#most classifiers in scikit-learn have a .predict_proba() method which returns the probability of a given sample being in a particular class
+# Import necessary modules
+from sklearn.metrics import roc_curve
+# Compute predicted probabilities: y_pred_prob
+y_pred_prob = logreg.predict_proba(X_test)[:,1]
+# Generate ROC curve values: fpr, tpr, thresholds
+fpr, tpr, thresholds = roc_curve(y_test, y_pred_prob)
+# Plot ROC curve
+plt.plot([0, 1], [0, 1], 'k--')
+plt.plot(fpr, tpr)
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('ROC Curve')
+plt.show()
+#comput AUC (Area under the curve) of the ROC
+from sklearn.metrics import roc_auc_score
+roc_auc_score(y_test,y_pred_prob)
+#can do so with cross validation as well
+from sklearn.model_selection import cross_val_score
+cv_scores = cross_val_score(logreg, X, y, cv=5, scoring='roc_auc')
+"""Say you have a binary classifier that in fact is just randomly making guesses. It would be correct approximately 50% of the time, and the resulting ROC curve would be a diagonal line in which the True Positive Rate and False Positive Rate are always equal. """
+
+"""hyperparamter tuning""
+from sklearn.model_selection import GridSearchCV
+param_grid = {'n_neighbors': np.arange(1,50)}
+knn = KNeighborsClassifier()
+knn_cv = GridSearchCV(knn, param_grid, cv=5)
+knn_cv.fit(X,y)
+knn_cv.best_params_
+knn_cv.best_score_
+
+# Import necessary modules
+from sklearn.model_selection import GridSearchCV
+from sklearn.linear_model import LogisticRegression
+# Setup the hyperparameter grid
+c_space = np.logspace(-5, 8, 15)
+param_grid = {'C': c_space}
+# Instantiate a logistic regression classifier: logreg
+logreg = LogisticRegression()
+# Instantiate the GridSearchCV object: logreg_cv
+logreg_cv = GridSearchCV(logreg, param_grid, cv=5)
+# Fit it to the data
+logreg_cv.fit(X,y)
+# Print the tuned parameters and score
+print("Tuned Logistic Regression Parameters: {}".format(logreg_cv.best_params_)) 
+print("Best score is {}".format(logreg_cv.best_score_))
+
+"""RandomizedSearchCV is more computationally efficient"""
+# Import necessary modules
+from scipy.stats import randint
+from sklearn.model_selection import RandomizedSearchCV
+from sklearn.tree import DecisionTreeClassifier
+# Setup the parameters and distributions to sample from: param_dist
+param_dist = {"max_depth": [3, None],
+              "max_features": randint(1, 9),
+              "min_samples_leaf": randint(1, 9),
+              "criterion": ["gini", "entropy"]}
+# Instantiate a Decision Tree classifier: tree
+tree = DecisionTreeClassifier()
+# Instantiate the RandomizedSearchCV object: tree_cv
+tree_cv = RandomizedSearchCV(tree, param_dist, cv=5)
+# Fit it to the data
+tree_cv.fit(X,y)
+# Print the tuned parameters and score
+print("Tuned Decision Tree Parameters: {}".format(tree_cv.best_params_))
+print("Best score is {}".format(tree_cv.best_score_))
+
+df=pd.read_csv('...')
+df_origin = pandas.get_dummy(df) #or sklearn.OneHotEncoder
+#this will give categorised data automatically
+#df_region = df.get_dummies(drop_first=True) #df doesn't have get_dummies, think it's pd
+
+"""handling missing data can be 0, ? or -1, and these won't show up when you use desc()"""
+#make them nan
+df.insulin.replace(0, np.nan, inplace=True)
+#how to handle them? we cn drop the missing data
+df=df.dropna()
+df.shape 
+#but we may lose too many data
+#there's also fillna()
+#or this df[df == '?'] = np.nan #df[df=='?'] works
+#we can IMPUTE the missing data, with mean for instance
+from sklearn.preprocessing import Imputer
+imp = Imputer(missing_values='NaN', strategy='mean', axis=?) #0 imputes columns, 1 imputes rows for some reason we want 0s
+imp.fit(df)
+df=imp.transform(df)
+
+
+
+#pipelines
+from sklearn.pipeline import Pipeline
+logreg = LogisticRegression()
+steps=[('imputation', imp), ('logistic_regression',logreg)] #tuple (name_to_give_the_step, estimator)
+pipeline = Pipeline(steps)
+X_train, X_test, y_train, y_test = tran_test_split(X, y, test_size=0.3, random_state=42)
+pipeline.fit(X_train, y_train)
+y_pred = pipeline.predict(X_test)
+pipeline.score(X_test, y_test)
+
+
+#standardization : sub mean divide by variance
+#subtract min and divide by range
+from sklearn.preprocessing import scale
+X_scaled = scale(X)
+
+"""combining pipeline with cross validation"""
+steps = [('scalar', StandardScalar()), ('knn', KNeighborsClassifier())]
+pipeline = Pipeline(steps)
+parameters = {knn__n_neighors: np.arange(1,50)} #name of classifier, __ and parameters
+X_train, X_test...
+cv = GridSearchCV(pipeline, param_grid=parameters, cv=5	)
+cv.fit(X_train, y_train)
+y_pred = cv.predict(X_test)
+cv.best_params_
+cv.score(X_test,y_test)
+classification_report(y_test,y_pred)
+
+# Setup the pipeline
+steps = [('scaler', StandardScaler()),
+         ('SVM', SVC())]
+pipeline = Pipeline(steps)
+
+# Specify the hyperparameter space
+parameters = {'SVM__C':[1, 10, 100],
+              'SVM__gamma':[0.1, 0.01]}
+# Create train and test sets
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.2, random_state=21)
+# Instantiate the GridSearchCV object: cv
+cv = GridSearchCV(pipeline, param_grid=parameters, cv=3)
+# Fit to the training set
+cv.fit(X_train, y_train)
+# Predict the labels of the test set: y_pred
+y_pred = cv.predict(X_test)
+# Compute and print metrics
+print("Accuracy: {}".format(cv.score(X_test, y_test)))
+print(classification_report(y_test, y_pred))
+print("Tuned Model Parameters: {}".format(cv.best_params_))
+
+# Setup the pipeline steps: steps
+steps = [('imputation', Imputer(missing_values='NaN', strategy='mean', axis=0)),
+         ('scaler', StandardScaler()),
+         ('elasticnet', ElasticNet())]
+# Create the pipeline: pipeline 
+pipeline = Pipeline(steps)
+# Specify the hyperparameter space
+parameters = {'elasticnet__l1_ratio':np.linspace(0,1,30)}
+# Create train and test sets
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.4, random_state=42)
+# Create the GridSearchCV object: gm_cv
+gm_cv = GridSearchCV(pipeline, param_grid=parameters)
+# Fit to the training set
+gm_cv.fit(X_test, y_test)
+# Compute and print the metrics
+r2 = gm_cv.score(X_train, y_train)
+print("Tuned ElasticNet Alpha: {}".format(gm_cv.best_params_))
+print("Tuned ElasticNet R squared: {}".format(r2))
+

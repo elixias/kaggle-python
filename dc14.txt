@@ -1,0 +1,1 @@
+#optimal parameters for generating a normal distribution are the mean and std of the given data
