@@ -76,3 +76,51 @@ WHERE constraint_type = 'FOREIGN KEY';
 ALTER TABLE affiliations
 DROP CONSTRAINT affiliations_organization_id_fkey;
 
+#inner join
+select p1.cola, colb from tablea as p1 inner join table b as p2 on p1.colc = p2.colc AND p1.cold = p2.cold
+
+#when the ids used to join tables are same, you can use keyword USING
+SELECT lefttbl.id, lefttbl.val, righttbl.val FROM lefttbl INNER JOIN righttbl USING (id)
+
+#joining with self: tbl as tblself, tbl as tblanotherself
+
+#using CASE
+SELECT name, continent, code, surface_area,
+    CASE WHEN surface_area > 2000000
+            THEN 'large'
+       WHEN surface_area > 350000
+            THEN 'medium'
+       ELSE 'small' END
+       AS geosize_group
+INTO countries_plus #into a new table
+FROM countries;
+
+INNER JOIN, SELF JOIN, LEFT JOIN, RIGHT JOIN, FULL JOIN, CROSS JOIN (Every possible combination)
+#UNIONS *STACKS* the *ROWS*, and *ignores duplicates* (use UNION ALL to include dups)
+INTERSECT
+EXCEPT - excludes similar records if found on the right side
+
+USING (___), ON 
+
+#semi joins 
+#filtering first table using values from 2nd table
+#example: ... WHERE  country in (SELECT name FROM country)
+#and anti joins (NOT IN)
+
+#subqueries in WHERE
+select name, country_code, urbanarea_pop
+  from cities
+where name IN
+  (select capital from countries)
+ORDER BY urbanarea_pop DESC;
+
+#this one confuses me subquery in SELECT
+SELECT countries.name AS country,
+  (SELECT COUNT(*)
+   FROM cities
+   WHERE countries.code = cities.country_code) AS cities_num
+FROM countries
+ORDER BY cities_num DESC, country
+LIMIT 9;
+
+#subquery in FROM
