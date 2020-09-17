@@ -295,7 +295,7 @@ pipeline.score(X_test, y_test)
 
 #standardization : sub mean divide by variance
 #subtract min and divide by range
-from sklearn.preprocessing import scale
+from sklearn.preprocessing import scale/normalize
 X_scaled = scale(X)
 
 """combining pipeline with cross validation"""

@@ -1,0 +1,183 @@
+general:
+str.lower()
+#dictionaries.items()
+#us list, then use : for i, ele in enumerate(['this','is','a','list'):
+
+datacamp:
+inner functions, pd (iloc, loc, logical_and etc), multiple arguments functions, map, lambda functions, try/except/raise
+
+datacamp2.py:
+iterators, zip, enumerators, reading chunks from large files (pd.read_csv("file.csv", chunksize=1000))
+
+datacamp3.py:
+list comprehensions, generators, creating dict with zipped list, generators (and open file)
+
+datacamp4.py
+iterators
+
+datacamp5.py:
+excel, os, SAS7BCAT, pickle, h5py, matrix lab, sql alchemy for python sql
+
+datacamp6.py
+requests, beautifulsoup, json
+
+datacamp7.py - preparing data for exploration and basic preprocessing
+exploration into data - inbuilt functions, frequency, visualisation - histograms, box, scatter
+melting columns into data
+pivoting - rows into columns with aggregation function if duplicates found
+concat dataframes
+glob (look for filenames in directory)
+pd.merge #on
+converting types using astype, to_numeric...
+regex matching, contains, findall
+using apply to transform columns/rows
+drop_duplicates()
+drop/fillna
+assert
+
+datacamp8.py:
+building dataframes from dictionaries, series
+read_csv with parameters, indexing, writing to files
+plotting, saving figure, setting axis and labels, configs, subplots
+quantile([0.X,0.X])
+unique()
+count()
+df selectors
+computing error
+datetime indices - ffill bfill
+converting to datetime
+downsampling/upsampling/resampling and reindexing
+interpolating	
+dealing w strings strip() lower() etc
+datetime functions df.dt.hour, localisation
+correlation corr()
+
+datacamp9.py
+get location of an index
+logical filtering
+dictionary mapping
+zscore
+deleting columns
+sort index
+slice to access inner index
+stack, unstack, swaplevel
+groupby
+groupby().groups
+agg/aggregate by cols or function
+transform is different from apply (considers the whole series instead of individual elements)
+boolean groupbys***
+idxman/idxmin : index of the max/min value
+categories
+
+datacamp10.py:
+reading multiple files pd.read_csv & glob
+reindexing and ffills
+sort index, sort values
+performing arithmetic between dfs
+appending dataframes (need to reset index) or use concat
+using indexslice to get segments of data from inner index
+concat, hstack and vstack to concat dfs - concat also lets you use joins (inner, outer) using index as criteria
+pd.merge, lets you join dfs using columns as criteria
+df.0,1join also works
+
+datacamp11.py
+crosstab
+(some case study using groupby, categories fillna, basic plotting
+
+dc12.py
+#all about customising plots
+styles - changing theme used by plotting
+axes
+tight_layout()
+xlim, ylim (configuring limits)
+scatter - color, marker, etc
+plt.annotate()
+linspace, meshgrid (will give the full 'combination' of coords of x and y), set_cmap, pcolor, colorbar, contour
+hist2d, hexbin
+plt.imread, imshow
+twinx #to overlay plots with different vertical scales on the same horizontal axis
+
+dc13.py: statistics, ecdf, etc
+bee swarm plot, ecdf
+percentiles
+random seed/size
+variance, std
+np.cov, covariance (product difference from mean of 2 features)
+np.corrcoef()
+generating binomial (discrete)/poisson distribution
+probability density function
+normal distribution (continuous)
+
+dc14.py:
+linear regression using np.polyfit()
+pearson coefficient using corrcoef()[0,1]
+bootstrapping
+standard deviation and SEM 
+pair bootstrapping - sampling from a set that contains x and y
+permutation samplng - scrambles data from 2 datasets and bootstrapping
+
+**visualisation for multple features***
+pairplot: https://seaborn.pydata.org/generated/seaborn.pairplot.html
+same as : pd.plotting.scatter_matrix
+https://stackoverflow.com/questions/29432629/plot-correlation-matrix-using-pandas
+matshow: https://matplotlib.org/examples/pylab_examples/matshow.html
+or styling: df.corr().style.background_gradient(cmap='coolwarm')
+
+dc15.py: supervised learning
+countplot
+scatter matrix
+train test split
+cross validation
+regularisation : ridge, lasso, elastic
+--
+KNN classifier, uses accuracy/score() (dc16: logloss)
+logisticregression
+predict_proba
+decisiontreeclassifier
+- uses confusion matrix and classifierreport, roc_auc_score, roc_curve
+--
+linear regression (lasso), uses rmse = np.sqrt(mean_squared_error(y_test,y_pred))
+--
+gridsearchcv, RandomizedSearchCV
+handling null data
+imputer : Imputer(missing_values='NaN', strategy='mean', axis=?) , fit and transform
+standardization with scalar
+
+DC16.PY UNSUPERVISED:
+kmeans, visualisin centroids of the clusters
+crosstab (summarising the predicted and their labels if you have it)
+(metric) inertia/spread
+elbow method
+hierarchical clustering/dendrograms/linkage
+fclustering
+t-sne
+pca
+pearsonr
+text classification: TfidfVectorizer
+Non negative matrix factorization nmf: components and features
+recommender system using cosine similarity (dot product of feature that you're looking for)
+
+estate.py:
+DecisionTreeRegressor
+RandomForestRegressor
+mean_absolute_error
+function that builds tree model and returns the mae
+imputers
+data cleaning
+used concat to join datasets after procesisng the categorical and numerical parts
+
+seabornp.py:
+univariate: strip plot, box plot, swarm plot
+ultivariate: joint plot, pair plot (better for clustering?), heatmap (correlation)
+histogram equalization
+twinx, histogram cdf
+
+datacamp_16_schoolbudget.py:
+compute log loss
+OneVsRestClassifier
+countvectorizer
+combine_text_columns (drops numeric columns and combines all text columns)
+FunctionTransformer
+FeatureUnion
+SelectKBest
+SparseInteractions

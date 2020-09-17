@@ -39,7 +39,7 @@ plt.legend(loc='upper right')
 
 """annotate"""
 plt.annotate('tetx', xy=(5.0,3.5), xytext=(4.25,4.0), arrowprops={'color':'red'}) #inputs are exact variable values, not coordinate values
-
+#xy=point to annotate, xytext=position to place the text
 """linspace and meshgrid"""
 u=np.linspace(-2,2,3)
 v=np.linspace(-1,1,5)
@@ -47,7 +47,7 @@ X,Y=np.meshgrid(u,v)
 Z=X**2/25+Y**2/4 #Z = np.sin(3*np.sqrt(X**2 + Y**2)) 
 print('Z:\n', Z)
 plt.set_cmap('grayscale')
-plt.pcolor(X,Y,Z) #or or plt.pcolor(Z) plt.pcolor(Z,cmap='Blues')plt.imshow()
+plt.pcolor(X,Y,Z) #or or plt.pcolor(Z) plt.pcolor(Z,cmap='Blues') plt.imshow()
 plt.colorbar()
 plt.contour() # instead of pcolor, contour(Z,30)
 #plt.contourf()
